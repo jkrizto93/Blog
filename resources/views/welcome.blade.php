@@ -1,7 +1,7 @@
 
 @extends('layout')
 
-@section('contenido')
+@section('content')
     <section class="posts container">
         @foreach($posts as $post)
         <article class="post no-image">
@@ -20,7 +20,7 @@
                 <footer class="container-flex space-between">
                     <div class="read-more">
                        
-                        <a href="#" class="text-uppercase c-green">read more</a>
+                        <a href="blog/{{$post->url}}" class="text-uppercase c-green"> Leer Mas</a>
                        
                     </div>
                     <div class="tags container-flex">

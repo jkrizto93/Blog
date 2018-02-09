@@ -388,7 +388,7 @@ desired effect
 
 <!-- AdminLTE App -->
 <script src="../../adminlte/js/adminlte.min.js"></script>
-
+@include('admin.posts.create')
 
 
 <!-- Optionally, you can add Slimscroll and FastClick plugins.
