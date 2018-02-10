@@ -14,6 +14,28 @@
 @stop
 @section('content')
 <div class="row">
+	@if($post->photos->count())
+		<div class="col-md-12">
+			<div class="box box-primary">
+				<div class="box-body">
+							<div class="row">
+								@foreach($post->photos as $photo)
+									<form method="POST" action="{{route('admin.photos.destroy',$photo)}}">
+										{{method_field('DELETE')}}
+										{{csrf_field()}}
+										<div class="col-md-2">
+											<button class="btn btn-danger btn-xs" style="position:absolute"><i class="fa fa-remove"></i></button>
+											<img class="img-responsive"src="{{url($photo->url)}}">
+										</div>
+									</form>
+								@endforeach
+							</div>
+				</div>
+			</div>
+		
+		</div>
+	@endif
+
 	<form method="POST" action="{{route('admin.posts.update',$post)}}">
 		{{csrf_field()}} {{method_field('PUT')}}
 		<div class="col-md-8">
@@ -37,8 +59,15 @@
 							<label>Contenido de la publicacion</label>
 							<textarea rows="10" id="editor" name="body" class="form-control">{{old('body',$post->body)}}</textarea>
 							{!!$errors->first('body','<span class="help-block">:message</span>')!!}
-							
 						</div>
+
+						<div class="form-group {{ $errors->has('iframe') ? 'has-error':''}}">
+							<label>Contenido iframe (embebido??)</label>
+							<textarea rows="2" id="editor" name="iframe" class="form-control" placeholder="Ingresa contenido de audio y video">{{old('iframe',$post->iframe)}}</textarea>
+							{!!$errors->first('iframe','<span class="help-block">:message</span>')!!}
+						</div>
+
+
 
 					</div>
 						
@@ -106,6 +135,7 @@
 		</div>
 
 	</form>
+
 </div>
 @stop
 
@@ -133,6 +163,7 @@
     });	
     $('.select2').select2();
     CKEDITOR.replace('editor');
+    CKEDITOR.config.height=315;
 
     var myDropzone= new Dropzone('.dropzone',{
     	url:'/admin/posts/{{$post->url}}/photos',
@@ -146,8 +177,9 @@
     });
 
     myDropzone.on('error', function(file,res){
-    	var cero=0;
-    	var msg=res.photo[cero];
+    	
+    	var msg=res
+    	console(res);
     	$('.dz-error-message > span').text(msg);
     });
 

@@ -27,6 +27,11 @@ class Post extends Model
     	return $this->belongsToMany(Tag::class);
     }
 
+    public function photos()//$post->category->name
+    {
+        return $this->hasMany(Photo::class);
+    }
+
     public function scopePublished($query)//$post->category->name
     {
         $query->whereNotNull('published_at')
