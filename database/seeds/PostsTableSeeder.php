@@ -4,6 +4,8 @@ use Illuminate\Database\Seeder;
 use App\Post;
 use App\Category;
 use App\Tag;
+use Illuminate\Support\Facades\Storage;
+
 
 
 
@@ -23,6 +25,7 @@ class PostsTableSeeder extends Seeder
         Post::truncate();
         Category::truncate();
         Tag::truncate();
+        Storage::disk('public')->deleteDirectory('posts');
 
  		$category = new Category;
         $category->name = "Categoria 1";

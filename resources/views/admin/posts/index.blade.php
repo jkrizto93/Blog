@@ -39,7 +39,11 @@
                 			<td>
                         <a href="{{route('posts.show',$post)}}" target="_blank" class="btn btn-xs btn-default"><i class="fa fa-eye"></i></a>
                 				<a href="{{route('admin.posts.edit',$post)}}" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></a>
-                				<a href="#" class="btn btn-xs btn-danger"><i class="fa fa-times"></i></a>
+                        <form method="POST" action="{{route('admin.posts.destroy',$post)}}" style="display: inline">
+                          {{csrf_field()}} {{method_field('DELETE')}}
+                          <button class="btn btn-xs btn-danger"><i class="fa fa-times"></i></button>
+                        </form>
+                			
 
                 			</td>
                 		</tr>

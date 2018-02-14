@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
+use App\Http\Requests\StorePostRequest;
 
 use App\Post;
 use App\Category;
@@ -39,33 +40,37 @@ class PostsController extends Controller
     }
 
     
-    public function update(Post $post,Request $request){
+    public function update(Post $post,StorePostRequest $request){
         
-        $this->validate($request,[
+      
+
+        $post->update($request->all());      
+        //etiquetas ?? o:
+
+
+        $post->syncTags($request->get('tags'));
+
+
+
+        return redirect()->route('admin.posts.edit',$post)->with('flash','Tu publicacion se guardo satisfactoriamente');
+
+    }
+/*
+    public function validatePost($request){
+        return $this->validate($request,[
             'title'=> 'required',
             'body'=> 'required',
             'category'=> 'required',
             'excerpt'=> 'required',
             'tags'=> 'required',
         ]);
-        //return $request->all();
-        $post->title= $request->get('title');
-        //$post->url= str_slug($request->get('title'));        
-        $post->body= $request->get('body');
-        $post->iframe= $request->get('iframe');
-        $post->excerpt= $request->get('excerpt');
-        $post->published_at= $request->has('published_at') ? Carbon::parse($request->get('published_at')) : null;
+    }*/
 
-        $post->category_id= Category::find($cat = $request->get('category')) 
-               ? $cat 
-               : Category::create([
-                'name'=>$cat
-            ]);
-        //etiquetas ?? o:
-        $post->save();
-
-        $post->tags()->sync($request->get('tags'));
-        return redirect()->route('admin.posts.edit',$post)->with('flash','Tu publicacion se guardo satisfactoriamente');
+    public function destroy(Post $post){
+        $post->delete();
+        return redirect()
+        ->route('admin.posts.index')
+        ->with('flash','Tu publicacion se elimino satisfactoriamente');
 
     }
 }

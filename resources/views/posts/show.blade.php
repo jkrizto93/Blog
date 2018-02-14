@@ -4,7 +4,7 @@
 @section('content')
 <article class="post container">
           @if($post->photos->count()===1)
-                <figure><img src="{{$post->photos->first()->url}}" alt="" class="img-responsive"></figure>
+                <figure><img src="{{url($post->photos->first()->url)}}" alt="" class="img-responsive"></figure>
             @elseif($post->photos->count() >1)
                @include('posts.carousel')
             @elseif($post->iframe)
