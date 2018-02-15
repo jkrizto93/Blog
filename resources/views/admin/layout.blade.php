@@ -381,18 +381,18 @@ desired effect
 <!-- Bootstrap 3.3.7 -->
 <script src="../../adminlte/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 
-
+@unless(request()->is('admin/posts/*'))
+  @include('admin.posts.create')
+@endunless
  
-@stack('scripst')
+@stack('scripts')
 
 
 <!-- AdminLTE App -->
 <script src="../../adminlte/js/adminlte.min.js"></script>
-@include('admin.posts.create')
-
-
 <!-- Optionally, you can add Slimscroll and FastClick plugins.
      Both of these plugins are recommended to enhance the
      user experience. -->
+
 </body>
 </html>

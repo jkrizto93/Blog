@@ -25,7 +25,7 @@
 										{{csrf_field()}}
 										<div class="col-md-2">
 											<button class="btn btn-danger btn-xs" style="position:absolute"><i class="fa fa-remove"></i></button>
-											<img class="img-responsive"src="{{url($photo->url)}}">
+											<img class="img-responsive" src="{{url($photo->url)}}">
 										</div>
 									</form>
 								@endforeach
@@ -148,7 +148,7 @@
   <link rel="stylesheet" href="../../adminlte/bower_components/select2/dist/css/select2.min.css">
 @endpush
 
-@push('scripst')
+@push('scripts')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.2.0/min/dropzone.min.js"></script>
 
 <script src="../../adminlte/bower_components/select2/dist/js/select2.full.min.js"></script>
@@ -179,9 +179,8 @@
 
     myDropzone.on('error', function(file,res){
     	
-    	var msg=res
-    	console(res);
-    	$('.dz-error-message > span').text(msg);
+    	console.log(res);
+    	//$('.dz-error-message > span').text(msg);
     });
 
     Dropzone.autoDiscover=false;

@@ -9,12 +9,12 @@ class Photo extends Model
 {
     //
     protected $guarded=[];
-    /*protected static function boot(){
+    protected static function boot(){
     	parent::boot();
 
     	static::deleting(function ($photo){
     		Storage::disk('public')->delete($photo->url);
 
     	});
-    }*/
+    }
 }

@@ -15,6 +15,15 @@ class Post extends Model
        'category_id',
     ];
 
+    protected static function boot(){
+        parent::boot();
+
+        static::deleting(function ($post){
+            $post->tags()->detach();
+            $post->photos->each->delete();
+        });
+    }
+
     public function getRouteKeyName(){
         return 'url';
     }
@@ -41,13 +50,35 @@ class Post extends Model
         ->where('published_at','<=', Carbon::now())
         ->latest('published_at');
     }
+    public static function create(array $attributes =[]){
 
+        $post= static::query()->create($attributes);
+        $post->generateUrl();
+        
+        return $post;
+    }
+    public function generateUrl(){
+        $url=str_slug($this->title);
+        if(static::where('url',$url)->exists()){
+            $url="{$url}-{$this->id}";
+        }
+        $this->url=$url;
+        $this->save();
+    }
+/*
      public function setTitleAttribute($title){
         $this->attributes['title']=($title);
 
-        $this->attributes['url']=str_slug($title);
-    }
+        $url = str_slug($title);
+        $duplicateUrlCount = Post::where('url','LIKE',"{$url}%")->count();
 
+        if($duplicateUrlCount){
+            $url.= "-". ++$duplicateUrlCount;
+        }
+
+        $this->attributes['url']=$url;
+    }
+*/
     public function setPublishedAtAttribute($published_at){
         $this->attributes['published_at']=$published_at 
                 ? Carbon::parse($published_at) 

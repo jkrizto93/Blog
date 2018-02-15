@@ -27,8 +27,14 @@ class PostsController extends Controller
     }*/
 
     public function store(Request $request){
-        $this->validate($request,['title' =>'required']);
+        $this->validate($request,[
+            'title' =>'required|min:3',
+
+        ]);
+
         $post=Post::create($request->only('title'));
+
+
         return redirect()->route('admin.posts.edit',$post);
 
     }
@@ -67,6 +73,8 @@ class PostsController extends Controller
     }*/
 
     public function destroy(Post $post){
+        $post->tags()->detach();
+        $post->photos->each->delete();
         $post->delete();
         return redirect()
         ->route('admin.posts.index')

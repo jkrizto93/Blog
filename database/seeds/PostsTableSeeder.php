@@ -25,6 +25,8 @@ class PostsTableSeeder extends Seeder
         Post::truncate();
         Category::truncate();
         Tag::truncate();
+        //Storage::deleteDirectory('public');
+
         Storage::disk('public')->deleteDirectory('posts');
 
  		$category = new Category;
