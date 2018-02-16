@@ -13,7 +13,7 @@
   <div class="carousel-inner" role="listbox">
       @foreach($post->photos as $photo)
         <div class="item {{$loop ->first ? 'active' :''}}">
-          <img src="{{url($photo->url)}}">
+          <img src="/storage/{{$photo->url}}">
         </div>
       @endforeach
     </div>
@@ -23,10 +23,10 @@
   <!-- Controls -->
   <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
     <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-    <span class="sr-only">Previous</span>
+    <span class="sr-only"><<< Mover esta wea</span>
   </a>
   <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
     <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-    <span class="sr-only">Next</span>
+    <span class="sr-only">Mover esta wea >>></span>
   </a>
 </div>

@@ -12,7 +12,7 @@ class Post extends Model
     protected $dates=['published_at'];
     protected $fillable=[
        'title', 'body', 'iframe', 'excerpt', 'published_at',
-       'category_id',
+       'category_id','user_id',
     ];
 
     protected static function boot(){
@@ -44,14 +44,25 @@ class Post extends Model
         return $this->hasMany(Photo::class);
     }
 
+    public function owner()
+    {
+        //como busca automticamente 'owner' en la DB , se pone el nombre real de la llave foranea :v 
+        return $this->belongsTo(User::class,'user_id');
+    }
+
     public function scopePublished($query)//$post->category->name
     {
         $query->whereNotNull('published_at')
         ->where('published_at','<=', Carbon::now())
         ->latest('published_at');
     }
-    public static function create(array $attributes =[]){
 
+    public function isPublished(){
+        return ! is_null($this->published_at) && $this->published_at < today();
+    }
+
+    public static function create(array $attributes =[]){
+        $attributes['user_id']=auth()->id();
         $post= static::query()->create($attributes);
         $post->generateUrl();
         
@@ -103,5 +114,19 @@ class Post extends Model
        
 
         return $this->tags()->sync($tagIds);
+    }
+
+    public function viewType($home=''){
+            if($this->photos->count()===1):
+                return 'posts.photo';
+            elseif($this->photos->count() >1):
+
+                return $home ==='home' ? 'posts.carousel-preview': 'posts.carousel';
+
+            elseif($this->iframe):
+                return 'posts.iframe';
+            else:
+                return 'posts.text';
+            endif;
     }
 }
