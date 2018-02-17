@@ -10,19 +10,19 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.7 -->
-  <link rel="stylesheet" href="../../adminlte/bower_components/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../../../adminlte/bower_components/bootstrap/dist/css/bootstrap.min.css">
   <!-- Font Awesome -->
-  <link rel="stylesheet" href="../../adminlte/bower_components/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="../../../adminlte/bower_components/font-awesome/css/font-awesome.min.css">
   <!-- Ionicons -->
-  <link rel="stylesheet" href="../../adminlte/bower_components/Ionicons/css/ionicons.min.css">
+  <link rel="stylesheet" href="../../../adminlte/bower_components/Ionicons/css/ionicons.min.css">
 
   @stack('styles')
 
  
 
-  <link rel="stylesheet" href="../../adminlte/css/AdminLTE.min.css">
+  <link rel="stylesheet" href="../../../adminlte/css/AdminLTE.min.css">
   <!-- iCheck -->
-  <link rel="stylesheet" href="../../adminlte/plugins/iCheck/square/blue.css">
+  <link rel="stylesheet" href="../../../adminlte/plugins/iCheck/square/blue.css">
 
 
 
@@ -88,7 +88,7 @@ desired effect
                     <a href="#">
                       <div class="pull-left">
                         <!-- User Image -->
-                        <img src="../../adminlte/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                        <img src="../../../adminlte/img/user2-160x160.jpg" class="img-circle" alt="User Image">
                       </div>
                       <!-- Message title and timestamp -->
                       <h4>
@@ -173,17 +173,17 @@ desired effect
             <!-- Menu Toggle Button -->
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <!-- The user image in the navbar-->
-              <img src="../../adminlte/img/user2-160x160.jpg" class="user-image" alt="User Image">
+              <img src="../../../adminlte/img/user2-160x160.jpg" class="user-image" alt="User Image">
               <!-- hidden-xs hides the username on small devices so only the image appears. -->
               <span class="hidden-xs">{{auth()->user()->name}}</span>
             </a>
             <ul class="dropdown-menu">
               <!-- The user image in the menu -->
               <li class="user-header">
-                <img src="../../adminlte/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                <img src="../../../adminlte/img/user2-160x160.jpg" class="img-circle" alt="User Image">
 
                 <p>
-                  {{auth()->user()->name}}
+                  {{auth()->user()->name}} - {{auth()->user()->roles->first()->name}}
                   <small>Miembro desde {{auth()->user()->created_at->format('d/M/Y')}}</small>
                 </p>
               </li>
@@ -230,7 +230,7 @@ desired effect
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel">
         <div class="pull-left image">
-          <img src="../../adminlte/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+          <img src="../../../adminlte/img/user2-160x160.jpg" class="img-circle" alt="User Image">
         </div>
         <div class="pull-left info">
           <p>{{auth()->user()->name}}</p>
@@ -376,9 +376,9 @@ desired effect
 <!-- REQUIRED JS SCRIPTS -->
 
 <!-- jQuery 3 -->
-<script src="../../adminlte/bower_components/jquery/dist/jquery.min.js"></script>
+<script src="../../../adminlte/bower_components/jquery/dist/jquery.min.js"></script>
 <!-- Bootstrap 3.3.7 -->
-<script src="../../adminlte/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="../../../adminlte/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 
 @unless(request()->is('admin/posts/*'))
   @include('admin.posts.create')
@@ -388,7 +388,7 @@ desired effect
 
 
 <!-- AdminLTE App -->
-<script src="../../adminlte/js/adminlte.min.js"></script>
+<script src="../../../adminlte/js/adminlte.min.js"></script>
 <!-- Optionally, you can add Slimscroll and FastClick plugins.
      Both of these plugins are recommended to enhance the
      user experience. -->

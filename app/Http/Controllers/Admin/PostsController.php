@@ -17,7 +17,9 @@ class PostsController extends Controller
     //borra con y tiene seguridad de usuario 
     public function index(){
     	//$posts=Post::all();
-        $posts=auth()->user()->posts;
+        //$posts=auth()->user()->posts;
+        //el que permite mostrar las publiccacionespor rol
+        $posts= Post::allowed()->get();
     	return view('admin.posts.index',compact('posts'));
     }
     /*
@@ -47,7 +49,7 @@ class PostsController extends Controller
 
     }
     public function edit(Post $post){
-        $this->authorize('view',$post);
+        $this->authorize('update',$post);
         
         return view('admin.posts.edit',[
             'post'=>$post,
