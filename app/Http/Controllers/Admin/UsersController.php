@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdateUserRequest;
@@ -32,6 +33,7 @@ class UsersController extends Controller
     public function create()
     {
         //
+        return view('admin.users.create');
     }
 
     /**
@@ -67,8 +69,10 @@ class UsersController extends Controller
     public function edit(User $user)
     {
         //
-        $roles=Role::pluck('name','id');
-        return view('admin.users.edit',compact('user','roles'));
+        $roles=Role::with('permissions')->get();
+        $permissions=Permission::pluck('name','id');
+
+        return view('admin.users.edit',compact('user','roles','permissions'));
 
     }
 
