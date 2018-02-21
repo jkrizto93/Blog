@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\User;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
-
+use App\Events\UserWasCreated;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdateUserRequest;
 
-use App\User;
 
 class UsersController extends Controller
 {
@@ -33,8 +33,11 @@ class UsersController extends Controller
     public function create()
     {
         //
-        return view('admin.users.create');
-    }
+        $user=new User;
+        $roles=Role::with('permissions')->get();
+        $permissions=Permission::pluck('name','id');
+
+        return view('admin.users.create',compact('user','roles','permissions'));    }
 
     /**
      * Store a newly created resource in storage.
@@ -45,6 +48,31 @@ class UsersController extends Controller
     public function store(Request $request)
     {
         //
+        //validar el formulario
+        $data=$request->validate([
+            'name' => 'required|max:255',
+            'email' => 'required|email|max:255|unique:users',
+        ]);
+        //generar una contraseña
+        $data['password']=str_random(8);
+        //Crar el usuario
+        $user= User::create($data);
+        //asignar los roles
+        if($request->filled('roles'))
+        { 
+               $user->assignRole($request->roles);
+        }
+         // asignar permisos
+        if($request->filled('permissions'))
+        { 
+            $user->givePermissionTo($request->permissions);
+        }
+
+        //*Importante alv D; se hace el pedo en EventServiceProvider.php*//
+        
+        //UserWasCreated::dispatch($user,$data['password']);
+                    
+        return redirect()->route('admin.users.index')->withFlash('El usuario a sido creado');
     }
 
     /**

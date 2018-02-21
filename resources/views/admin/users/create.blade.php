@@ -20,7 +20,7 @@
 					</ul>
 				@endif
 				
-				<form method="POST" action="{{route('admin.users.create')}}">
+				<form method="POST" action="{{route('admin.users.store')}}">
 					{{csrf_field()}}
 					<div class="form-group">
 						<label for="name">Nombre:</label>
@@ -30,8 +30,21 @@
 						<label for="email">Email:</label>
 						<input name="email" value="{{old('email')}}" class="form-control">
 					</div>
+					<div class="form-group col-md-6">
+						<label>Roles</label>
+						@include('admin.roles.checkboxes')
 
-					<button class="btn btn-primary btn-block">Actualizar usuario</button>
+					</div>
+
+					<div class="form-group col-md-6">
+						<label>Permisos</label>
+					@include('admin.permissions.checkboxes')
+
+					</div>
+
+					<span class="help-block">La contraseña sera enviada a su correo electronico.
+
+					<button class="btn btn-primary btn-block">Crear usuario</button>
 						
 					
 				</form>

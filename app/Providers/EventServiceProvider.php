@@ -12,9 +12,10 @@ class EventServiceProvider extends ServiceProvider
      *
      * @var array
      */
+    /*aqui :D  en consola ejecutar php artisan event:generate despes de modificar el listened*/
     protected $listen = [
-        'App\Events\Event' => [
-            'App\Listeners\EventListener',
+        'App\Events\UserWasCreated' => [
+            'App\Listeners\SendLoginCredentials',
         ],
     ];
 
