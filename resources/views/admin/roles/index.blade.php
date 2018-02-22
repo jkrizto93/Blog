@@ -1,12 +1,12 @@
 @extends('admin.layout')
 @section('header')
 	<h1>
-	  Todos los usuarios
-	  <small>Listado de usuarsios</small>
+	  Todos los Roles
+	  <small>Listado de Roles</small>
 	</h1>
 	<ol class="breadcrumb">
     <li><a href="{{route('admin')}}"><i class="fa fa-dashboard"></i> Inicio</a></li>
-	        <li class="active">Usuarios</li>
+	        <li class="active">Roles</li>
 	</ol>
 @stop
 
@@ -14,37 +14,35 @@
 
 		<div class="box box-primary">
             <div class="box-header">
-              <h3 class="box-title">Listado de usuarios</h3>
-              <a href="{{route('admin.users.create')}}" class="btn btn-primary pull-right"><i class="fa fa-plus"></i>Crear usuarsios</a>
+              <h3 class="box-title">Listado de Roles</h3>
+              <a href="{{route('admin.roles.create')}}" class="btn btn-primary pull-right"><i class="fa fa-plus"></i>Crear Roles</a>
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-              <table id="users-Table" class="table table-bordered table-striped">
+              <table id="roles-Table" class="table table-bordered table-striped">
                 <thead>
                 <tr>
                   <th>Id</th>
                   <th>Nombre</th>
-                  <th>Email</th>
-                  <th>Roles</th>
+                  <th>Guard</th>
                   <th>Acciones</th>
 
 
                 </tr>
                 </thead>
                 <tbody>
-                	@foreach($users as $user)
+                	@foreach($roles as $role)
                 		<tr>
-                			<td>{{$user->id}}</td>
-                			<td>{{$user->name}}</td>
-                			<td>{{$user->email}}</td>
-                      <td>{{$user->getRoleNames()->implode(', ')}}</td>
+                			<td>{{$role->id}}</td>
+                			<td>{{$role->name}}</td>
+                			<td>{{$role->guard_name}}</td>
 
                 			<td>
-                        <a href="{{route('admin.users.show',$user)}}" target="_blank" class="btn btn-xs btn-default"><i class="fa fa-eye"></i></a>
-                				<a href="{{route('admin.users.edit',$user)}}" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></a>
-                        <form method="POST" action="{{route('admin.users.destroy',$user)}}" style="display: inline">
+                        <a href="{{route('admin.roles.show',$role)}}" target="_blank" class="btn btn-xs btn-default"><i class="fa fa-eye"></i></a>
+                				<a href="{{route('admin.roles.edit',$role)}}" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></a>
+                        <form method="POST" action="{{route('admin.roles.destroy',$role)}}" style="display: inline">
                           {{csrf_field()}} {{method_field('DELETE')}}
-                          <button class="btn btn-xs btn-danger" onclick="return confirm('¿Quiere eliminar esta cuenta?')"><i class="fa fa-times"></i></button>
+                          <button class="btn btn-xs btn-danger" onclick="return confirm('¿Quiere eliminar este rol?')"><i class="fa fa-times"></i></button>
                         </form>
                 			
 
@@ -73,7 +71,7 @@
 
   <script>
     $(function () {
-      $('#users-Table').DataTable();
+      $('#roles-Table').DataTable();
     });
   </script>
 

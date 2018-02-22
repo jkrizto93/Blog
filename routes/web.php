@@ -30,13 +30,22 @@ Route::get('tags/{tag}', 'TagsController@show')->name('tags.show');
 Route::get('admin', 'AdminController@index');
 
 /*Cosas de administrador*/
-Route::group(['prefix'=>'admin', 'namespace'=>'Admin', 'middleware'=>'auth'],function(){
+Route::group(
+	['prefix'=>'admin', 'namespace'=>'Admin', 'middleware'=>'auth'],
+function(){
 
 Route::get('/', 'AdminController@index')->name('admin');
 Route::resource('posts','PostsController',['except' => 'show', 'as' => 'admin']);
+
 Route::resource('users','UsersController',['as' => 'admin']);
-Route::put('users/{user}/roles','UsersRolesController@update')->name('admin.users.roles.update');
-Route::put('users/{user}/permissions','UsersPermissionsController@update')->name('admin.users.permissions.update');
+Route::resource('roles','RolesController',['as' => 'admin']);
+
+Route::middleware('role:Admin')
+	->put('users/{user}/roles','UsersRolesController@update')
+	->name('admin.users.roles.update');
+Route::middleware('role:Admin')
+	->put('users/{user}/permissions','UsersPermissionsController@update')
+	->name('admin.users.permissions.update');
 
 /*
 Route::get('/posts', 'PostsController@index')->name('admin.posts.index');

@@ -26,6 +26,9 @@ class CreatePostsTable extends Migration
             $table->unsignedInteger('category_id')->nullable();
             $table->unsignedInteger('user_id');
 
+            //al borrar los usuarios aqui permitira borras todas sus publicaciones en la base de datos, pero si son  varias publicaciones de un solo usuario puede tardar mucho el proceso
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+
 
             $table->timestamps();
         });

@@ -19,6 +19,8 @@ class Post extends Model
         parent::boot();
 
         static::deleting(function ($post){
+            //al hacerlo en codigo, se puede eliminar el usuario, delegare l proceso y responder rapidamente.
+            //Job::dispatch()
             $post->tags()->detach();
             $post->photos->each->delete();
         });

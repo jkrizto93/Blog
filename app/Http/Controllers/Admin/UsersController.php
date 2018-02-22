@@ -4,11 +4,11 @@ namespace App\Http\Controllers\Admin;
 
 use App\User;
 use Illuminate\Http\Request;
-use Spatie\Permission\Models\Role;
-use Spatie\Permission\Models\Permission;
 use App\Events\UserWasCreated;
+use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdateUserRequest;
+use Spatie\Permission\Models\Permission;
 
 
 class UsersController extends Controller
@@ -21,7 +21,9 @@ class UsersController extends Controller
     public function index()
     {
         //
-        $users= User::all();
+        
+
+        $users= User::allowed()->get();
         return view('admin.users.index',compact('users'));
     }
 
@@ -34,6 +36,8 @@ class UsersController extends Controller
     {
         //
         $user=new User;
+        $this->authorize('create',$user);
+
         $roles=Role::with('permissions')->get();
         $permissions=Permission::pluck('name','id');
 
@@ -47,6 +51,8 @@ class UsersController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('create',new User);
+
         //
         //validar el formulario
         $data=$request->validate([
@@ -70,7 +76,7 @@ class UsersController extends Controller
 
         //*Importante alv D; se hace el pedo en EventServiceProvider.php*//
         
-        //UserWasCreated::dispatch($user,$data['password']);
+        UserWasCreated::dispatch($user,$data['password']);
                     
         return redirect()->route('admin.users.index')->withFlash('El usuario a sido creado');
     }
@@ -84,6 +90,8 @@ class UsersController extends Controller
     public function show(User $user)
     {
         //
+        $this->authorize('view',$user);
+
         return view('admin.users.show',compact('user'));
 
     }
@@ -97,6 +105,7 @@ class UsersController extends Controller
     public function edit(User $user)
     {
         //
+        $this->authorize('update',$user);
         $roles=Role::with('permissions')->get();
         $permissions=Permission::pluck('name','id');
 
@@ -115,9 +124,10 @@ class UsersController extends Controller
     {
         //
 
-        
+        $this->authorize('update',$user);
+
         $user->update($request->validated());
-        return back()->withFlash('usuario actualizado');
+        return redirect()->route('admin.users.edit',$user)->withFlash('usuario actualizado');
     }
 
     /**
@@ -126,8 +136,14 @@ class UsersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(User $user)
     {
         //
+        $this->authorize('delete',$user);
+
+        $user->delete();
+         return redirect()
+        ->route('admin.posts.index')->with('flash','El usuario se elimino satisfactoriamente');
+
     }
 }
