@@ -5,6 +5,9 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
+use App\Http\Requests\SaveRolesRequest;
+
 
 class RolesController extends Controller
 {
@@ -16,6 +19,8 @@ class RolesController extends Controller
     public function index()
     {
         //
+        $this->authorize('view',new Role);
+
         return view('admin.roles.index',[
             'roles' => Role::all()
         ]);
@@ -29,6 +34,12 @@ class RolesController extends Controller
     public function create()
     {
         //
+        $this->authorize('create',$role = new Role);
+        return view('admin.roles.create',[
+            'role'=> $role,
+            'permissions' => Permission::pluck('name','id')
+            
+        ]);
     }
 
     /**
@@ -37,31 +48,48 @@ class RolesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(SaveRolesRequest $request)
     {
-        //
-    }
+        /*
+         $data=$request ->validate([
+            'name' => 'required|unique:roles',
+            'display_name' => 'required' ],
+            [
+                'name.required' => 'El campo Identificador es obligatorio',
+                'name.unique' => 'Eeste Identificador ya ha sido registrado',              
+                'display_name.required' => 'El campo Nombre es obligatorio'
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
+            ]
 
+        );  */  
+
+        $this->authorize('create',new Role);
+         $role=Role::create($request->validated());
+         if($request->has('permissions'))
+            {   
+                $role -> givePermissionTo($request->permissions);
+            }
+
+            return redirect()->route('admin.roles.index')->withFlash('Role creado correctamente');
+        }
+
+    
     /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Role $role)
     {
         //
+        $this->authorize('update',$role);
+
+        return view('admin.roles.edit',[
+            'role' =>$role,
+            'permissions' => Permission::pluck('name','id')
+
+        ]);
     }
 
     /**
@@ -71,9 +99,26 @@ class RolesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(SaveRolesRequest $request, Role $role)
     {
-        //
+            /*
+        $data=$request ->validate(['display_name' => 'required'],
+            [
+                'display_name.required' => 'El Campo Nombre es obligatorio'
+            ]
+        );   */  
+
+        $this->authorize('update',$role);
+
+        $role->update($request->validated());
+        $role->permissions()->detach();
+        if($request->has('permissions')){
+            $role->givePermissionTo($request->permissions);
+        }
+
+        return redirect()->route('admin.roles.edit',$role)->withFlash('Role actualizado correctamente');
+
+
     }
 
     /**
@@ -82,8 +127,12 @@ class RolesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Role $role)
     {
         //
+      
+        $this->authorize('delete',$role);
+        $role->delete();
+        return redirect()->route('admin.roles.index')->withFlash('Role eliminado');
     }
 }

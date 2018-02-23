@@ -38,7 +38,8 @@ Route::get('/', 'AdminController@index')->name('admin');
 Route::resource('posts','PostsController',['except' => 'show', 'as' => 'admin']);
 
 Route::resource('users','UsersController',['as' => 'admin']);
-Route::resource('roles','RolesController',['as' => 'admin']);
+Route::resource('roles','RolesController',['except' => 'show','as' => 'admin']);
+Route::resource('permissions','PermissionsController',['except' => 'show','as' => 'admin']);
 
 Route::middleware('role:Admin')
 	->put('users/{user}/roles','UsersRolesController@update')

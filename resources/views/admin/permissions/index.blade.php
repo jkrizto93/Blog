@@ -1,12 +1,12 @@
 @extends('admin.layout')
 @section('header')
 	<h1>
-	  Todos los Roles
-	  <small>Listado de Roles</small>
+	  Todos los permisos
+	  <small>Listado de permisos</small>
 	</h1>
 	<ol class="breadcrumb">
     <li><a href="{{route('admin')}}"><i class="fa fa-dashboard"></i> Inicio</a></li>
-	        <li class="active">Roles</li>
+	        <li class="active">permisos</li>
 	</ol>
 @stop
 
@@ -14,8 +14,8 @@
 
 		<div class="box box-primary">
             <div class="box-header">
-              <h3 class="box-title">Listado de Roles</h3>
-              <a href="{{route('admin.roles.create')}}" class="btn btn-primary pull-right"><i class="fa fa-plus"></i>Crear Roles</a>
+              <h3 class="box-title">Listado de permisos</h3>
+              <a href="{{route('admin.permissions.create')}}" class="btn btn-primary pull-right"><i class="fa fa-plus"></i>Crear permisos</a>
             </div>
             <!-- /.box-header -->
             <div class="box-body">
@@ -25,28 +25,26 @@
                   <th>Id</th>
                   <th>Identificador</th>
                   <th>Nombre</th>
-                  <th>Permisos</th>
                   <th>Acciones</th>
 
 
                 </tr>
                 </thead>
                 <tbody>
-                	@foreach($roles as $role)
+                	@foreach($permissions as $permission)
                 		<tr>
-                			<td>{{$role->id}}</td>
-                			<td>{{$role->name}}</td>
-                			<td>{{$role->display_name}}</td>
-                      <td>{{$role->permissions->pluck('display_name')->implode(', ')}}</td>
+                			<td>{{$permission->id}}</td>
+                			<td>{{$permission->name}}</td>
+                			<td>{{$permission->display_name}}</td>
 
                 			<td>
                   
-                				<a href="{{route('admin.roles.edit',$role)}}" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></a>
+                				<a href="{{route('admin.roles.edit',$permission)}}" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></a>
 
-                        @if($role->id !== 1)
-                          <form method="POST" action="{{route('admin.roles.destroy',$role)}}" style="display: inline">
+                        @if($permission->id !== 1)
+                          <form method="POST" action="{{route('admin.roles.destroy',$permission)}}" style="display: inline">
                               {{csrf_field()}} {{method_field('DELETE')}}
-                               <button class="btn btn-xs btn-danger" onclick="return confirm('¿Quiere eliminar este rol?')"><i class="fa fa-times"></i>
+                               <button class="btn btn-xs btn-danger" onclick="return confirm('¿Quiere eliminar este role?')"><i class="fa fa-times"></i>
                                </button>
                           </form>
                         @endif
