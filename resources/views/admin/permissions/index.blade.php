@@ -15,7 +15,7 @@
 		<div class="box box-primary">
             <div class="box-header">
               <h3 class="box-title">Listado de permisos</h3>
-              <a href="{{route('admin.permissions.create')}}" class="btn btn-primary pull-right"><i class="fa fa-plus"></i>Crear permisos</a>
+              
             </div>
             <!-- /.box-header -->
             <div class="box-body">
@@ -38,16 +38,11 @@
                 			<td>{{$permission->display_name}}</td>
 
                 			<td>
-                  
-                				<a href="{{route('admin.roles.edit',$permission)}}" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></a>
+                          
+                        @can('update',$permission)
+                				  <a href="{{route('admin.permissions.edit',$permission)}}" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></a>
+                        @endcan
 
-                        @if($permission->id !== 1)
-                          <form method="POST" action="{{route('admin.roles.destroy',$permission)}}" style="display: inline">
-                              {{csrf_field()}} {{method_field('DELETE')}}
-                               <button class="btn btn-xs btn-danger" onclick="return confirm('¿Quiere eliminar este role?')"><i class="fa fa-times"></i>
-                               </button>
-                          </form>
-                        @endif
 
 
                 			

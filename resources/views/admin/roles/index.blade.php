@@ -15,7 +15,9 @@
 		<div class="box box-primary">
             <div class="box-header">
               <h3 class="box-title">Listado de Roles</h3>
-              <a href="{{route('admin.roles.create')}}" class="btn btn-primary pull-right"><i class="fa fa-plus"></i>Crear Roles</a>
+              @can('create',$roles->first())
+                  <a href="{{route('admin.roles.create')}}" class="btn btn-primary pull-right"><i class="fa fa-plus"></i>Crear Roles</a>
+              @endcan
             </div>
             <!-- /.box-header -->
             <div class="box-body">
@@ -41,15 +43,20 @@
 
                 			<td>
                   
-                				<a href="{{route('admin.roles.edit',$role)}}" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></a>
+                				
+                         @can('update',$role)
+                            <a href="{{route('admin.roles.edit',$role)}}" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></a>
+                         @endcan
 
-                        @if($role->id !== 1)
-                          <form method="POST" action="{{route('admin.roles.destroy',$role)}}" style="display: inline">
-                              {{csrf_field()}} {{method_field('DELETE')}}
-                               <button class="btn btn-xs btn-danger" onclick="return confirm('¿Quiere eliminar este rol?')"><i class="fa fa-times"></i>
-                               </button>
-                          </form>
-                        @endif
+                        @can('delete',$role)
+                            @if($role->id !== 1)
+                                <form method="POST" action="{{route('admin.roles.destroy',$role)}}" style="display: inline">
+                                      {{csrf_field()}} {{method_field('DELETE')}}
+                                     <button class="btn btn-xs btn-danger" onclick="return confirm('¿Quiere eliminar este rol?')"><i class="fa fa-times"></i>
+                                     </button>
+                                </form>
+                            @endif
+                        @endcan
 
 
                 			
